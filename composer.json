@@ -1,0 +1,14 @@
+{
+    "require": {
+        "slim/slim": "4.*",
+        "laminas/laminas-diactoros": "^2.21",
+        "guzzlehttp/psr7": "2",
+        "firebase/php-jwt": "4.0",
+        "illuminate/database": "@dev",
+        "slim/psr7": "1.5",
+        "nyholm/psr7": "1.5.1",
+        "nyholm/psr7-server": "1.0.2",
+        "http-interop/http-factory-guzzle": "1.2.0",
+        "vlucas/phpdotenv": "5.5.0"
+    }
+}
