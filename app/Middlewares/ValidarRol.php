@@ -30,11 +30,4 @@ class ValidarRol
             }
         }
     }
-
-    public function funcionDeprueba(Request $request, ResquestHandler $handler)
-    {
-        echo "entro a la funcion de prueba";
-        $response = $handler->handle($request);
-        return $response;
-    }
 }

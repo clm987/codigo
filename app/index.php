@@ -62,8 +62,8 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
   $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new ValidarRol());
-})->add(new ValidarToken());
-
+});
+//->add(new ValidarToken())
 // $app->group('/armasPublic', function (RouteCollectorProxy $group) {
 //   $group->get('[/]', \ArmaController::class . ':TraerTodos');
 //   $group->get('/{nacionalidad}', \ArmaController::class . ':TraerUnoPorPais');

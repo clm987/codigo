@@ -34,8 +34,7 @@ class PedidoController extends Pedido
             $payload = json_encode(array("mensaje" => "Ocurrio un error."));
             $response->getBody()->write($payload);
         }
-        $payload = json_encode(array("mensaje" => "prueba."));
-        $response->getBody()->write($payload);
+
         return $response
             ->withHeader('Content-Type', 'application/json');
     }
