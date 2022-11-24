@@ -19,6 +19,7 @@ require_once './Controllers/ProductoController.php';
 require_once './Controllers/LogginController.php';
 require_once './Middlewares/ValidarRol.php';
 require_once './Middlewares/ValidarToken.php';
+require_once './Enums/ERol.php';
 // require_once './Middlewares/LogguerMD.php';
 
 // Load ENV
@@ -61,28 +62,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
-  $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new ValidarRol());
-});
-//->add(new ValidarToken())
-// $app->group('/armasPublic', function (RouteCollectorProxy $group) {
-//   $group->get('[/]', \ArmaController::class . ':TraerTodos');
-//   $group->get('/{nacionalidad}', \ArmaController::class . ':TraerUnoPorPais');
-// });
-
-// $app->group('/armasUsers', function (RouteCollectorProxy $group) {
-//   $group->get('/{id}', \ArmaController::class . ':TraerUnoPorId')->add(new ValidarToken());
-//   $group->post('[/]', \ArmaController::class . ':CargarUno')->add(new Validaciones());
-// });
-
-// $app->delete('/armas/[{id}]', \ArmaController::class . ':BorrarUno')->add(new LogguerMD())->add(new Validaciones());
-
-// $app->put('/armas[/{nombre}/{nuevoNombre}]', \ArmaController::class . ':ModificarUno')->add(new Validaciones());
-
-// $app->get('/armas/{nombre}', \ArmaController::class . ':TraerUsuariosPorNombre')->add(new Validaciones());
-
-// $app->group('/ventas', function (RouteCollectorProxy $group) {
-//   $group->get('[/{fechaInicial}/{fechaFinal}/{pais}]', \VentaController::class . ':ListadoPaisFecha')->add(new Validaciones());
-//   $group->post('[/]', \VentaController::class . ':CargarUno');
-// })->add(new ValidarToken());
+  $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new ValidarRol(ERol::COCINERO, ERol::BARTENDER));
+})->add(new ValidarToken());
 
 $app->run();

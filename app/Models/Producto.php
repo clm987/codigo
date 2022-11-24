@@ -47,12 +47,13 @@ class Producto
         $consulta->bindValue(':stock', $stock, PDO::PARAM_INT);
         $consulta->execute();
     }
-    // public static function obtenerProductoPorId($id)
-    // {
-    //     $objAccesoDatos = AccesoDatos::obtenerInstancia();
-    //     $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM producto WHERE id = :id");
-    //     $consulta->bindValue(':id', $id, PDO::PARAM_STR);
-    //     $consulta->execute();
-    //     return $consulta->fetchObject('Producto');
-    // }
+
+    public static function obtenerProductoPorId($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM producto WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetchObject('Producto');
+    }
 }

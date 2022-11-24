@@ -15,7 +15,7 @@ class ProductoController extends Producto
         $auxProdExistente = Producto::obtenerProductoPornombre(strtoupper($nombre));
 
         if ($auxProdExistente == null) {
-            if (ESector::isValidName($sector)) {
+            if (ESector::isValidValue($sector)) {
                 $auxProducto = new Producto();
                 $auxProducto->nombre = strtoupper($nombre);
                 $auxProducto->stock = $stock;

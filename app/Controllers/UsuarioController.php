@@ -12,7 +12,7 @@ class UsuarioController extends Usuario
     $rol = $parametros['rol'];
     $nuevoId = -1;
 
-    if (ERol::isValidName($rol)) {
+    if (ERol::isValidValue($rol)) {
       $auxUsr = new Usuario();
       $auxUsr->nombre = strtolower($nombre);
       $auxUsr->clave = $clave;

@@ -46,6 +46,8 @@ class PedidoController extends Pedido
         $codigo_pedido = $parametros['codigo_pedido'];
         $auxPedidoEncontrado = Pedido::obtenerPedidoPorCodigo($codigo_pedido);
         $auxMesaEncontrada = Mesa::obtenerMesaPorCodigo($codigo_mesa);
+        var_dump($auxMesaEncontrada);
+        var_dump($auxPedidoEncontrado);
         if ($auxPedidoEncontrado != null && $auxMesaEncontrada != null) {
             $auxPedidoEncontrado->guardarFotoPedido($codigo_mesa, $codigo_pedido);
             $payload = json_encode(array("mensaje" => "Foto subida con exito."));
@@ -61,6 +63,16 @@ class PedidoController extends Pedido
     }
 
     public function TraerTodos($request, $response, $args)
+    {
+        $lista = Pedido::obtenerTodos();
+        $payload = json_encode(array("ListaDePedidos" => $lista));
+
+        $response->getBody()->write($payload);
+        return $response
+            ->withHeader('Content-Type', 'application/json');
+    }
+
+    public function TraerListadoPorRol($request, $response, $args)
     {
         $lista = Pedido::obtenerTodos();
         $payload = json_encode(array("ListaDePedidos" => $lista));
