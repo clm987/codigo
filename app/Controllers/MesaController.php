@@ -6,7 +6,6 @@ class MesaController extends Mesa
 {
     public function CargarUno($request, $response, $args)
     {
-        //$parametros = $request->getParsedBody();
         $auxMesa = new Mesa();
         $auxMesa->estado = EEmesa::CERRADA;
         $nuevoId = $auxMesa->crearMesa();

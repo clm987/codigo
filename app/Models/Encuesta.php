@@ -7,13 +7,6 @@ class Encuesta
         return $auxFecha = date("Y-m-d");
     }
 
-    // public static function GenerarCodigoEncuesta()
-    // {
-    //     $length = 2;
-    //     $letrasRandom = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, $length);
-    //     return $auxCodigo  = $letrasRandom . Rand(100, 999);
-    // }
-
     public function crearEncuesta()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -96,7 +89,6 @@ class Encuesta
             ORDER BY promedio_puntuacion DESC
             LIMIT 5"
         );
-        //$consulta->bindValue(':id_pedido', $pedido->id, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'PedidoProducto');

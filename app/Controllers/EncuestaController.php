@@ -61,7 +61,6 @@ class EncuestaController extends Encuesta
                     ->withHeader('Content-Type', 'application/json');
                 break;
             default:
-                # code...
                 break;
         }
         $payload = json_encode(array("mensaje" => "Ocurrio un error."));

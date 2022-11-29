@@ -99,7 +99,6 @@ class Pedido
             $monto += $value->Cantidad * $value->Precio;
         }
         return $monto;
-        //return $consulta->fetchObject('Pedido');
     }
 
     public static function modificarEtiquetasEstado($lista)

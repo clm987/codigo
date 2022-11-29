@@ -54,14 +54,4 @@ class Usuario
         }
         return $arrayDatos;
     }
-
-
-    // public static function obtenerUsuarioPorId($id)
-    // {
-    //     $objAccesoDatos = AccesoDatos::obtenerInstancia();
-    //     $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM usuario WHERE id = :id");
-    //     $consulta->bindValue(':id', $id, PDO::PARAM_STR);
-    //     $consulta->execute();
-    //     return $consulta->fetchObject('Usuario');
-    // }
 }

@@ -85,7 +85,6 @@ class Mesa
             FROM pedido as p
             GROUP BY p.id_mesa) as i)"
         );
-        //$consulta->bindValue(':id_pedido', $pedido->id, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'PedidoProducto');
