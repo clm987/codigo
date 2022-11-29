@@ -25,6 +25,7 @@ class EncuestaController extends Encuesta
             $nuevaEncuesta->puntuacion_mozo = $punt_mozo;
             $nuevaEncuesta->puntuacion_cocinero = $punt_cocinero;
             $nuevaEncuesta->descripcion_experiencia = $descripcion;
+            $nuevaEncuesta->promedio_puntuacion = $nuevaEncuesta->calcularPromedio();
             $nuevoId = $nuevaEncuesta->crearEncuesta();
         }
         if ($nuevoId > 0) {

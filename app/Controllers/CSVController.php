@@ -10,9 +10,11 @@ class CsvController
         $nombre_archivo = $parametros['nombre_archivo'];
         $nombre_con_extension = $nombre_archivo . ".csv";
         $auxListaObjetos = Encuesta::obtenerTodos();
-        if (!ManejadorCSV::GuardarArchivoCSV($auxListaObjetos, $nombre_con_extension)) {
+        if (ManejadorCSV::GuardarArchivoCSV($auxListaObjetos, $nombre_con_extension)) {
             $payload = json_encode(array("mensaje" => "Archivo Guardado con exito."));
             $response->getBody()->write($payload);
+            return $response
+                ->withHeader('Content-Type', 'application/json');
         }
 
         $payload = json_encode(array("mensaje" => "Ocurrio un error."));

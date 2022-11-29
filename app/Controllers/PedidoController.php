@@ -66,6 +66,7 @@ class PedidoController extends Pedido
     public function TraerTodos($request, $response, $args)
     {
         $lista = Pedido::obtenerTodos();
+        $lista = Pedido::modificarEtiquetasEstado($lista);
         $payload = json_encode(array("ListaDePedidos" => $lista));
 
         $response->getBody()->write($payload);
@@ -132,6 +133,7 @@ class PedidoController extends Pedido
     {
         $auxEstado = $args['estado_Pedido'];
         $listaPedidos = Pedido::obtenerPedidosPorEstado($auxEstado);
+        $listaPedidos = Pedido::modificarEtiquetasEstado($listaPedidos);
 
         $payload = json_encode(array("Listado de pedidos" => $listaPedidos));
         $response->getBody()->write($payload);

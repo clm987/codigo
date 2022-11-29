@@ -56,6 +56,16 @@ class Encuesta
         return $consulta->fetchObject('Encuesta');
     }
 
+    public function calcularPromedio()
+    {
+        return $promedio = round(
+            ($this->puntuacion_mesa +
+                $this->puntuacion_restaurante +
+                $this->puntuacion_mozo +
+                $this->puntuacion_cocinero) / 4
+        );
+    }
+
     public function EncuestaToCsv()
     {
         $dataString = $this->id;

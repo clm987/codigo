@@ -22,7 +22,6 @@ require_once './Controllers/CSVController.php';
 require_once './Middlewares/ValidarRol.php';
 require_once './Middlewares/ValidarToken.php';
 require_once './Enums/ERol.php';
-// require_once './Middlewares/LogguerMD.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -42,8 +41,8 @@ $app->addBodyParsingMiddleware();
 
 $app->post('/login[/]', \LogginController::class . ':ValidarUsuario');
 $app->post('/fotoPedido[/]', \PedidoController::class . ':CargarFoto');
-$app->post('/leerCSV[/]', \CsvController::class . ':LeerCsv');
-$app->post('/generarCSV[/]', \CsvController::class . ':GenerarCSV');
+$app->post('/leerCSV[/]', \CsvController::class . ':LeerCsv')->add(new ValidarRol(ERol::SOCIO))->add(new ValidarToken());
+$app->post('/generarCSV[/]', \CsvController::class . ':GenerarCSV')->add(new ValidarRol(ERol::SOCIO))->add(new ValidarToken());
 
 $app->group('/clientes', function (RouteCollectorProxy $group) {
   $group->get('[/{codigo_mesa}/{numero_pedido}]', \PedidoController::class . ':ConsultarTiempoPedido');
@@ -63,7 +62,7 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
 })->add(new ValidarRol(ERol::MOZO))->add(new ValidarToken());
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
-  $group->get('[/]', \MesaController::class . ':TraerTodos');
+  $group->get('[/]', \MesaController::class . ':TraerTodos')->add(new ValidarRol(ERol::SOCIO));
   $group->get('/{mesa}', \MesaController::class . ':TraerUno');
   $group->post('[/]', \MesaController::class . ':CargarUno')->add(new ValidarRol(ERol::SOCIO));
 })->add(new ValidarToken());
@@ -84,9 +83,9 @@ $app->group('/informes', function (RouteCollectorProxy $group) {
 })->add(new ValidarRol(ERol::SOCIO))->add(new ValidarToken());
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
-  $group->get('[/]', \PedidoController::class . ':TraerTodos');
+  $group->get('[/]', \PedidoController::class . ':TraerTodos')->add(new ValidarRol(ERol::SOCIO));
   $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new ValidarRol(ERol::MOZO));
-})->add(new ValidarRol(ERol::MOZO))->add(new ValidarToken());
+})->add(new ValidarToken());
 
 $app->group('/cocina', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerListadoPorRol');
@@ -98,5 +97,10 @@ $app->group('/bar', function (RouteCollectorProxy $group) {
   $group->post('[/]', \PedidoController::class . ':ModificarUno');
 })->add(new ValidarRol(ERol::BARTENDER));
 
-$app->get('[/{numero_pedido}]', \PedidoController::class . ':ConsultarTiempoPedido');
+$app->group('/cerveceria', function (RouteCollectorProxy $group) {
+  $group->get('[/]', \PedidoController::class . ':TraerListadoPorRol');
+  $group->post('[/]', \PedidoController::class . ':ModificarUno');
+})->add(new ValidarRol(ERol::CERVECERO));
+
+$app->get('[/{numero_pedido}]', \PedidoController::class . ':ConsultarTiempoPedido')->add(new ValidarRol(ERol::SOCIO))->add(new ValidarToken());
 $app->run();

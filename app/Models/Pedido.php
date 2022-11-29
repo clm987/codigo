@@ -65,7 +65,6 @@ class Pedido
     }
     public static function modificarEstadoPedido($idPedido, $estado)
     {
-        var_dump($idPedido);
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE pedido SET estado = :estado WHERE id = :id_pedido");
         $consulta->bindValue(':id_pedido', $idPedido, PDO::PARAM_INT);
@@ -101,5 +100,14 @@ class Pedido
         }
         return $monto;
         //return $consulta->fetchObject('Pedido');
+    }
+
+    public static function modificarEtiquetasEstado($lista)
+    {
+        foreach ($lista as $value) {
+            $value->estado = EEPedido::getName($value->estado);
+        }
+
+        return $lista;
     }
 }
