@@ -63,15 +63,43 @@ class Pedido
         $consulta->execute();
         return $consulta->fetchObject('Pedido');
     }
+    public static function modificarEstadoPedido($idPedido, $estado)
+    {
+        var_dump($idPedido);
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE pedido SET estado = :estado WHERE id = :id_pedido");
+        $consulta->bindValue(':id_pedido', $idPedido, PDO::PARAM_INT);
+        $consulta->bindValue(':estado', $estado, PDO::PARAM_INT);
+        return $consulta->execute();
+    }
 
+    public static function obtenerPedidosPorEstado($estado)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedido where estado = :estado");
+        $consulta->bindValue(':estado', $estado, PDO::PARAM_INT);
+        $consulta->execute();
 
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
 
-    // public static function obtenerPedidoPorId($id)
-    // {
-    //     $objAccesoDatos = AccesoDatos::obtenerInstancia();
-    //     $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedido WHERE id = :id");
-    //     $consulta->bindValue(':id', $id, PDO::PARAM_STR);
-    //     $consulta->execute();
-    //     return $consulta->fetchObject('Pedido');
-    // }
+    public static function obtenerPedidoPorId($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedido WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_STR);
+        $consulta->execute();
+        return $consulta->fetchObject('Pedido');
+    }
+
+    public static function calcularCuenta($auxPedido)
+    {
+        $monto = 0;
+        $listaItemsPedido = PedidoProducto::obtenerItemsPorPedido($auxPedido);
+        foreach ($listaItemsPedido as $value) {
+            $monto += $value->Cantidad * $value->Precio;
+        }
+        return $monto;
+        //return $consulta->fetchObject('Pedido');
+    }
 }

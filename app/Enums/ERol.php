@@ -6,5 +6,4 @@ abstract class ERol extends BasicEnum
     const COCINERO = 3;
     const MOZO = 4;
     const SOCIO = 5;
-    const CLIENTE = 6;
 }

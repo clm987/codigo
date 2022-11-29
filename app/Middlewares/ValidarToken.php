@@ -10,6 +10,7 @@ class ValidarToken
     public function __invoke(Request $request, ResquestHandler $handler)
     {
         $header = $request->getHeaderLine('Authorization');
+        $esValido = false;
         try {
             if ($header != null) {
                 $token = trim(explode("Bearer", $header)[1]);
@@ -27,7 +28,8 @@ class ValidarToken
             return $response;
         } else {
             $response = new Response();
-            $response->getBody()->write("No se encuentra logueado");
+            $payload = json_encode(array('Mensaje: ' => 'No se encuentra logueado;'));
+            $response->getBody()->write($payload);
             return $response;
         }
     }

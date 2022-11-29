@@ -35,6 +35,15 @@ class Mesa
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
     }
 
+    public static function modificarEtiquetasEstado($lista)
+    {
+        foreach ($lista as $value) {
+            $value->estado = EEmesa::getName($value->estado);
+        }
+
+        return $lista;
+    }
+
     public static function obtenerMesaPorId($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -51,5 +60,34 @@ class Mesa
         $consulta->bindValue(':codigo_mesa', $codigo, PDO::PARAM_STR);
         $consulta->execute();
         return $consulta->fetchObject('Mesa');
+    }
+
+    public static function modificarEstadoMesa($idMesa, $estado)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE mesa SET estado = :estado WHERE id = :id_mesa");
+        $consulta->bindValue(':id_mesa', $idMesa, PDO::PARAM_INT);
+        $consulta->bindValue(':estado', $estado, PDO::PARAM_INT);
+        return $consulta->execute();
+    }
+
+    public static function mesaMasUsada()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta(
+            "SELECT p.id_mesa, count(p.id_mesa) maximo
+            FROM pedido as p
+            GROUP BY
+            p.id_mesa HAVING count(p.id_mesa) =
+            (SELECT
+            max(i.total) FROM
+            (SELECT count(p.id_mesa) as total
+            FROM pedido as p
+            GROUP BY p.id_mesa) as i)"
+        );
+        //$consulta->bindValue(':id_pedido', $pedido->id, PDO::PARAM_STR);
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'PedidoProducto');
     }
 }

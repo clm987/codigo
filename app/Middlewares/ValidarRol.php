@@ -18,16 +18,26 @@ class ValidarRol
     public function __invoke(Request $request, ResquestHandler $handler)
     {
         $header = $request->getHeaderLine('Authorization');
-        $token = trim(explode("Bearer", $header)[1]);
-        $datosToken = AutentificadorJWT::ObtenerData($token);
-        $rol = $datosToken->rol;
-        if (!is_null(intval($rol)) && in_array($rol, $this->roleArray, false)) {
-            $response = $handler->handle($request->withAddedHeader('idMozo', $datosToken->id));
+
+        try {
+            $token = trim(explode("Bearer", $header)[1]);
+            $datosToken = AutentificadorJWT::ObtenerData($token);
+            if (!is_null($datosToken)) {
+                $rol = $datosToken->rol;
+                if (!is_null(intval($rol)) && in_array($rol, $this->roleArray, false)) {
+                    $response = $handler->handle($request->withAddedHeader('idMozo', $datosToken->id));
+                    return $response;
+                }
+            }
+        } catch (Exception $e) {
+            $payload = json_encode(array('error' => $e->getMessage()));
+            $response = new ResponseMW();
+            $response->getBody()->write($payload);
             return $response;
         }
-
         $response = new ResponseMW();
-        $response->getBody()->write("No autorizado para realizar esta operacion.");
+        $payload = json_encode(array("Mensaje" => "No esta autorizado para realizar esta operacion."));
+        $response->getBody()->write($payload);
         return $response;
     }
 }

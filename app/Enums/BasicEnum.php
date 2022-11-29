@@ -28,9 +28,18 @@ abstract class BasicEnum
         return in_array(strtolower($name), $keys);
     }
 
-    public static function isValidValue($value, $strict = true)
+    public static function isValidValue($value, $strict = false)
     {
         $values = array_values(self::getConstants());
         return in_array($value, $values, $strict);
     }
+
+    // public static function returnName($value, $strict = false)
+    // {
+    //     $values = self::getConstants();
+    //     $calledClass = get_called_class();
+    //     //array_values(self::getConstants());
+    //     var_dump($calledClass);
+    //     //return in_array($value, $values, $strict);
+    // }
 }

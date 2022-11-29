@@ -56,4 +56,27 @@ class Producto
         $consulta->execute();
         return $consulta->fetchObject('Producto');
     }
+
+    public static function devolverSectorPorId($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM producto WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+        $auxProducto = $consulta->fetchObject('Producto');
+        return $auxProducto->sector;
+    }
+
+    public static function obtenerSectores()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta(
+            "SELECT p.sector
+            from producto as p, pedido as pe, pedidoproducto as pp
+            WHERE (pe.id = pp.id_pedido) and (p.id = pp.Id_producto)"
+        );
+        $consulta->execute();
+
+        return $consulta->fetchAll();
+    }
 }
