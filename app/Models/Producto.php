@@ -48,6 +48,16 @@ class Producto
         $consulta->execute();
     }
 
+    public static function consultarStock($id)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta("SELECT stock FROM producto WHERE id = :id");
+        $fecha = new DateTime(date("d-m-Y"));
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetch(PDO::FETCH_OBJ);
+    }
+
     public static function obtenerProductoPorId($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();

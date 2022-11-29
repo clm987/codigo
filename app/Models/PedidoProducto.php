@@ -33,7 +33,14 @@ class PedidoProducto
             $auxPedidoItem->id_producto = $value['id_producto'];
             $auxPedidoItem->cantidad = $value['cantidad'];
             $auxPedidoItem->estado = EEPedido::PENDIENTE;
-            array_push($arrayDeIds, $auxPedidoItem->crearItemPedido());
+            $auxStock = Producto::consultarStock($value["id_producto"]);
+            if ($auxPedidoItem->cantidad <= $auxStock->stock) {
+                array_push($arrayDeIds, $auxPedidoItem->crearItemPedido());
+                $nuevoStock = $auxStock->stock - $auxPedidoItem->cantidad;
+                Producto::actualizarStock($auxPedidoItem->id_producto, $nuevoStock);
+            } else {
+                return false;
+            }
         }
         if (count($arrayDeIds) == count($lista)) {
             return true;
@@ -117,25 +124,4 @@ class PedidoProducto
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'PedidoProducto');
     }
-
-    // public static function obtenerPedidoPornombre($nombre)
-    // {
-    //     $objAccesoDatos = AccesoDatos::obtenerInstancia();
-    //     $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedido WHERE nombre = :nombre");
-    //     $consulta->bindValue(':nombre', $nombre, PDO::PARAM_STR);
-    //     $consulta->execute();
-    //     return $consulta->fetchObject('Pedido');
-    // }
-    // public static function obtenerPedidoPorId($id)
-    // {
-    //     $objAccesoDatos = AccesoDatos::obtenerInstancia();
-    //     $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedido WHERE id = :id");
-    //     $consulta->bindValue(':id', $id, PDO::PARAM_STR);
-    //     $consulta->execute();
-    //     return $consulta->fetchObject('Pedido');
-    // }
-    /*
-             $consulta->bindValue(':tiempo_estimado_min', $this->tiempo_estimado_min, PDO::PARAM_INT);
-                $consulta->bindValue(':id_empleado_responsable', $this->id_empleado_responsable, PDO::PARAM_INT);
-        */
 }

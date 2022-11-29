@@ -60,7 +60,7 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \ProductoController::class . ':TraerTodos');
   $group->get('/{producto}', \ProductoController::class . ':TraerUno');
   $group->post('[/]', \ProductoController::class . ':CargarUno');
-})->add(new ValidarRol(ERol::SOCIO))->add(new ValidarToken());
+})->add(new ValidarRol(ERol::MOZO))->add(new ValidarToken());
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
@@ -85,8 +85,8 @@ $app->group('/informes', function (RouteCollectorProxy $group) {
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
-  $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new ValidarRol(ERol::SOCIO, ERol::MOZO));
-})->add(new ValidarRol(ERol::SOCIO, ERol::MOZO))->add(new ValidarToken());
+  $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new ValidarRol(ERol::MOZO));
+})->add(new ValidarRol(ERol::MOZO))->add(new ValidarToken());
 
 $app->group('/cocina', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerListadoPorRol');

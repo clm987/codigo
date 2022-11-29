@@ -66,8 +66,6 @@ class MesaController extends Mesa
             $payload = json_encode(array("mensaje" => "Ocurrio un error."));
             $response->getBody()->write($payload);
         }
-        // $payload = json_encode(array("mensaje" => "Ocurrio un error."));
-        // $response->getBody()->write($payload);
         return $response
             ->withHeader('Content-Type', 'application/json');
     }

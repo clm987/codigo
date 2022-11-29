@@ -26,17 +26,18 @@ class PedidoController extends Pedido
         $nuevoId = $auxPedido->crearPedido();
         if ($nuevoId > 0) {
             if (PedidoProducto::cargarLista($listaProductos, $nuevoId)) {
+                Mesa::modificarEstadoMesa($id_mesa, EEmesa::CON_CLIENTE_ESPERANDO);
+
                 $payload = json_encode(array("mensaje" => "Pedido creado con exito", "Codigo_Pedido: " => $auxPedido->codigo_pedido));
                 $response->getBody()->write($payload);
             } else {
-                $payload = json_encode(array("mensaje" => "Ocurrio un error."));
+                $payload = json_encode(array("mensaje" => "No hay stock suficiente."));
                 $response->getBody()->write($payload);
             }
         } else {
             $payload = json_encode(array("mensaje" => "Ocurrio un error."));
             $response->getBody()->write($payload);
         }
-
         return $response
             ->withHeader('Content-Type', 'application/json');
     }
